@@ -1,32 +1,60 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var ShowList = React.createClass({
-  render: function(){
+class ShowList extends React.Component{
+
+  //componentDidUpdata
+  constructor(props){
+    super(props);
+    this.state = {value:this.props.options[0]}
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event){
+    this.props.alertParent(this.props.name,event.target.selectedIndex+1)
+  }
+
+  render(){
       var listItems = this.props.options.map(function(optionValue){
-        return  <option value="{{optionValue}}">{optionValue}</option>;
+        return  <option value={optionValue}>{optionValue}</option>;
       });
       return (
-          <select name="values">
+          <select name={this.state.value} onChange={this.handleChange}>
             {listItems}
           </select>
-      )
+      );
     }
 
-});
+}
 
-var Input = React.createClass({
-  render: function () {
+class Input extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  render () {
     return (
     <div className="col-md-6">
       <h3>{this.props.name}</h3>
-      <ShowList options={this.props.options}/>
-  </div>
-    )
+      <ShowList options={this.props.options} alertParent = {this.props.alertParent} name={this.props.name}/>
+    </div>
+    );
   }
-});
-var InputPanel = React.createClass({
-  render: function () {
+}
+
+class InputPanel extends React.Component{
+
+  // myFunction(){
+  //   this.props.children();
+  // }
+  constructor(props){
+    super(props);
+
+  }
+
+
+
+
+  render (){
     function generateList(start,end,increment){
       var listToBeReturned = [];
       for(var i=start; i<=end; i+=increment){
@@ -49,12 +77,12 @@ var InputPanel = React.createClass({
     return (
       <div className="col-md-4">
         <div className="row" style={padding}>
-          <Input name="kVP" options = {optionsKv}/>
-          <Input name="mA" options = {optionsMa}/>
-          <Input name="Kernal" options = {optionsKernal}/>
-          <Input name="Slice" options = {optionsSlice}/>
-          <Input name="Detector Size" options = {optionsDetect}/>
-          <Input name="Measurements" options = {optionsMeasure}/>
+          <Input name="kVP" options = {optionsKv} alertParent = {this.props.alertParent}/>
+          <Input name="mA" options = {optionsMa} alertParent = {this.props.alertParent}/>
+          <Input name="Kernal" options = {optionsKernal} alertParent = {this.props.alertParent}/>
+          <Input name="Slice" options = {optionsSlice} alertParent = {this.props.alertParent}/>
+          <Input name="Detector Size" options = {optionsDetect} alertParent = {this.props.alertParent}/>
+          <Input name="Measurements" options = {optionsMeasure} alertParent = {this.props.alertParent}/>
         </div>
         <div className = "row">
           <div>
@@ -71,54 +99,92 @@ var InputPanel = React.createClass({
           </div>
         </div>
       </div>
-    )
+    );
   }
 
 
-});
-var Image = React.createClass({
-  render: function () {
+}
+class Image extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  render () {
     var style = {
       height: '360px',
       width: '360px',
       padding:'20px'
 
     };
+    var indexKvP = this.props.fileProps['kVP'];
+    var indexMA = this.props.fileProps['mA'];
+    var indexDet = this.props.fileProps['Detector Size'];
+    var indexSlice = this.props.fileProps['Slice'];
+    var indexKernal = this.props.fileProps['Kernal'];
+    var Measurement = this.props.fileProps['Measurements']
+    if(indexMA == 10)
+    {
+      indexMA = 'A';
+    }
+
+    var fileString = ""+this.props.name+indexKvP + indexMA + indexDet + indexSlice +indexKernal+".jpg";
+
+
 
     return (
       <div className="col-md-6">
-      <img src={this.props.name} style={style}/>
+      <img src={fileString} style={style}/>
       </div>
-    )
+    );
   }
-});
+}
 
-var ImagePanel = React.createClass({
-  render: function () {
+class ImagePanel extends React.Component{
+  constructor(props){
+    super(props)
+  }
+  render() {
     return (
 
       <div className="col-md-8">
-        <Image name="./catalog/KS_image_1A111_A.jpg"/>
-        <Image name="./catalog/KB_image_1A111_A.jpg"/>
-        <Image name="./catalog/CR_image_1A111.jpg"/>
-        <Image name="./catalog/SR_image_1A111.jpg"/>
+        <Image name="./catalog/KS_image_" fileProps = {this.props.fileProps}/>
+        <Image name="./catalog/KB_image_" fileProps = {this.props.fileProps}/>
+        <Image name="./catalog/CR_image_" fileProps = {this.props.fileProps}/>
+        <Image name="./catalog/SR_image_" fileProps = {this.props.fileProps}/>
       </div>
-    )
+    );
   }
-});
-
-var App = React.createClass({
-  render: function () {
+}
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      'kVP' : '1',
+      'Kernal' : '1',
+      'mA' :'1',
+      'Slice' : '1',
+      'Detector Size' : '1',
+      'Measurements' : '1'
+    }
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(inputName, value){
+    var newState = this.state;
+    console.log(newState['Slice']);
+    newState[inputName] = value;
+    console.log(newState);
+    this.setState(newState);
+  }
+  render() {
     return (
       <div className = "container-fluid">
         <div className= "row">
-          <ImagePanel/>
-          <InputPanel/>
+          <ImagePanel fileProps = {this.state}/>
+          <InputPanel alertParent = {this.handleChange}/>
       </div>
     </div>
-    )
+  );
   }
-});
+}
 ReactDOM.render(
   <App/>,
   document.getElementById('app')
