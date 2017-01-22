@@ -73,7 +73,7 @@ class InputPanel extends React.Component{
     var optionsMa = generateList(50,500,50)
     var optionsSlice = ['2','3','4','6','10']
     var optionsDetect = ['0.6','1.2']
-    var optionsMeasure = ['On','Off']
+    var optionsMeasure = ['Off','On']
     return (
       <div className="col-md-4">
         <div className="row" style={padding}>
@@ -120,14 +120,21 @@ class Image extends React.Component{
     var indexDet = this.props.fileProps['Detector Size'];
     var indexSlice = this.props.fileProps['Slice'];
     var indexKernal = this.props.fileProps['Kernal'];
-    var Measurement = this.props.fileProps['Measurements']
+    var Measurement = ""+this.props.fileProps['Measurements']
     if(indexMA == 10)
     {
       indexMA = 'A';
     }
-
-    var fileString = ""+this.props.name+indexKvP + indexMA + indexDet + indexSlice +indexKernal+".jpg";
-
+    if (this.props.name[0]=='K' && Measurement=='2' ) {
+      var fileString = "./catalog/"+this.props.name+indexKvP + indexMA +
+      indexDet + indexSlice +indexKernal+"_A"+".jpg";
+      console.log(this.props.name[0]);
+    }
+    else{
+      var fileString = "./catalog/"+this.props.name+indexKvP + indexMA +
+      indexDet + indexSlice +indexKernal+".jpg";
+      console.log(this.props.name[0]);
+    }
 
 
     return (
@@ -146,10 +153,10 @@ class ImagePanel extends React.Component{
     return (
 
       <div className="col-md-8">
-        <Image name="./catalog/KS_image_" fileProps = {this.props.fileProps}/>
-        <Image name="./catalog/KB_image_" fileProps = {this.props.fileProps}/>
-        <Image name="./catalog/CR_image_" fileProps = {this.props.fileProps}/>
-        <Image name="./catalog/SR_image_" fileProps = {this.props.fileProps}/>
+        <Image name="KS_image_" fileProps = {this.props.fileProps}/>
+        <Image name="KB_image_" fileProps = {this.props.fileProps}/>
+        <Image name="CR_image_" fileProps = {this.props.fileProps}/>
+        <Image name="SR_image_" fileProps = {this.props.fileProps}/>
       </div>
     );
   }
