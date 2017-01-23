@@ -47,16 +47,13 @@ class MeasPanel extends React.Component{
   }
 
   render (){
-    //var reference = "99999";
-    var reference = this.props.fileProps['Index'];
 
     return(
       <div>
         <h3> Measurements </h3>
         <p> <b>Soft Tissue: </b> Liver = xx HU, Fat = xx HU, Spleen = xx HU </p>
         <p> <b>Bone: </b> Trabecular Bone = xx HU, Cortical Bone = xx HU </p>
-        <p> Test display of {reference}
-        </p>
+        <p> Test display of {this.props.fileProps['Index']}</p>
       </div>
   );
   }
@@ -78,7 +75,7 @@ class MeasPanel extends React.Component{
             Again record the HU values for Spleen Trabecular and Cortical Bone. </p>
             <p> Note that while soft tissue remains almost the same, <br></br>
             the more dense materials exhibit a much greater change with different kV levels.</p>
-            <p> This is how Dual Energy acquisitions can do material decomposition!</p>
+            <p> This is how Dual Energy acquisitions can do material decomposition or separation!</p>
         </div>
     );
   }
