@@ -3,7 +3,6 @@ var ReactDOM = require('react-dom');
 
 class ShowList extends React.Component{
 
-  //componentDidUpdata
   constructor(props){
     super(props);
     this.state = {value:this.props.options[0]}
@@ -43,16 +42,9 @@ class Input extends React.Component{
 
 class InputPanel extends React.Component{
 
-  // myFunction(){
-  //   this.props.children();
-  // }
   constructor(props){
     super(props);
-
   }
-
-
-
 
   render (){
     function generateList(start,end,increment){
@@ -71,7 +63,7 @@ class InputPanel extends React.Component{
     var optionsKv = ['80','110','130']
     var optionsKernal = ['B10','B30','B40','B50','B70']
     var optionsMa = generateList(50,500,50)
-    var optionsSlice = ['2','3','4','6','10']
+    var optionsSlice = ['1','2','3','4','6','10']
     var optionsDetect = ['0.6','1.2']
     var optionsMeasure = ['Off','On']
     return (
@@ -87,15 +79,15 @@ class InputPanel extends React.Component{
         <div className = "row">
           <div>
             <h3> Measurement Box</h3>
-            <p> ST sentence goes here </p>
+            <p> Kidney <span id="this.props.fileProps['kVP']">.</span> </p>
             <p> Bone sentence goes here </p>
           </div>
         </div>
         <div className = "row">
           <div>
-            <h3> Commentary Box</h3>
+            <h3> Teaching Unit</h3>
             <p> Sentences go here </p>
-            <p> and hers and so on </p>
+            <p> and here and so on </p>
           </div>
         </div>
       </div>
@@ -115,25 +107,26 @@ class Image extends React.Component{
       padding:'20px'
 
     };
-    var indexKvP = this.props.fileProps['kVP'];
-    var indexMA = this.props.fileProps['mA'];
-    var indexDet = this.props.fileProps['Detector Size'];
-    var indexSlice = this.props.fileProps['Slice'];
-    var indexKernal = this.props.fileProps['Kernal'];
+    // addition of [ ""+ ] needed for stability as type of return was changing
+    var indexKVP = ""+this.props.fileProps['kVP'];
+    var indexMA = ""+this.props.fileProps['mA'];
+    var indexDet = ""+this.props.fileProps['Detector Size'];
+    var indexSlice = ""+this.props.fileProps['Slice'];
+    var indexKernal = ""+this.props.fileProps['Kernal'];
     var Measurement = ""+this.props.fileProps['Measurements']
     if(indexMA == 10)
     {
       indexMA = 'A';
     }
+    var indexNum = indexKVP + indexMA + indexDet + indexSlice +indexKernal;
+
     if (this.props.name[0]=='K' && Measurement=='2' ) {
-      var fileString = "./catalog/"+this.props.name+indexKvP + indexMA +
-      indexDet + indexSlice +indexKernal+"_A"+".jpg";
-      console.log(this.props.name[0]);
+      var fileString = "./catalog/"+this.props.name+indexNum+"_A"+".jpg";
+      console.log(indexNum);
     }
     else{
-      var fileString = "./catalog/"+this.props.name+indexKvP + indexMA +
-      indexDet + indexSlice +indexKernal+".jpg";
-      console.log(this.props.name[0]);
+      var fileString = "./catalog/"+this.props.name+indexNum+".jpg";
+      console.log(indexNum);
     }
 
 
@@ -161,6 +154,7 @@ class ImagePanel extends React.Component{
     );
   }
 }
+
 class App extends React.Component {
   constructor(props){
     super(props);
@@ -192,6 +186,7 @@ class App extends React.Component {
   );
   }
 }
+
 ReactDOM.render(
   <App/>,
   document.getElementById('app')
