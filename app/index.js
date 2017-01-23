@@ -78,16 +78,22 @@ class InputPanel extends React.Component{
         </div>
         <div className = "row">
           <div>
-            <h3> Measurement Box</h3>
-            <p> Kidney <span id="this.props.fileProps['kVP']">.</span> </p>
-            <p> Bone sentence goes here </p>
+            <h3> Measurements</h3>
+            <p> <b>Soft Tissue: </b> Liver = xx HU, Fat = xx HU, Spleen = xx HU </p>
+            <p> <b>Bone: </b> Trabecular Bone = xx HU, Cortical Bone = xx HU </p>
           </div>
         </div>
         <div className = "row">
           <div>
             <h3> Teaching Unit</h3>
-            <p> Sentences go here </p>
-            <p> and here and so on </p>
+            <p> <b><u> Dual Energy </u></b></p>
+            <p> Select an 80kVP parameter combination. <br></br>
+            Record the HU values for Spleen Trabecular and Cortical Bone</p>
+            <p> Now change only the kV to 130kVP. <br></br>
+            Again record the HU values for Spleen Trabecular and Cortical Bone. </p>
+            <p> Note that while soft tissue remains almost the same, <br></br>
+            the more dense materials exhibit a much greater change with different kV levels.</p>
+            <p> This is how Dual Energy acquisitions can do material decomposition!</p>
           </div>
         </div>
       </div>
