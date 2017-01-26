@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Papa = require('papaparse');
 
 class ShowList extends React.Component{
 
@@ -47,6 +48,42 @@ class MeasPanel extends React.Component{
   }
 
   render (){
+    var config = {
+	    delimiter: "",	// auto-detect
+	    newline: "",	// auto-detect
+	    header: false,
+	    dynamicTyping: false,
+	    preview: 0,
+	    encoding: "",
+	    worker: false,
+	    comments: false,
+	    step: undefined,
+	    complete: undefined,
+	    error: undefined,
+	    download: false,
+	    skipEmptyLines: false,
+	    chunk: undefined,
+	    fastMode: undefined,
+	    beforeFirstChunk: undefined,
+	    withCredentials: undefined
+    }
+
+    function doStuff(data) {
+      //The measurements data will be usable here
+      console.log(data);
+    }
+
+    function parseData(url, callBack) {
+      Papa.parse(url, {
+        download: true,
+        dynamicTyping: true,
+        complete: function(results) {
+            callBack(results.data);
+        }
+      });
+    }
+
+    parseData("./catalog/0_meas_catalog.csv", doStuff);
 
     return(
       <div>
