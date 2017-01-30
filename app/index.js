@@ -24,7 +24,6 @@ class ShowList extends React.Component{
           </select>
       );
     }
-
 }
 
 class Input extends React.Component{
@@ -48,6 +47,8 @@ class MeasPanel extends React.Component{
   }
 
   render (){
+    var index = this.props.fileProps['Index'];
+    console.log(index);
     var config = {
 	    delimiter: "",	// auto-detect
 	    newline: "",	// auto-detect
@@ -68,10 +69,26 @@ class MeasPanel extends React.Component{
 	    withCredentials: undefined
     }
 
-    function doStuff(data) {
-      //The measurements data will be usable here
-      console.log(data);
-    }
+    var showMeas = (function (data) {
+      // Does this need to go in handle change?
+      var extract = new Object();
+      extract = data[0];
+      var arrayLength = data.length;
+      for (var i = 0; i < arrayLength; i++) {
+      extract = data[i];
+      if (extract[0]==index) {
+         i=arrayLength;
+         }
+      }
+      this.props.fileProps['Liver']= extract[1];
+      this.props.fileProps['Fat']= extract[2];
+      this.props.fileProps['Spleen']= extract[3];
+      //this.props.fileProps['TBone']= extract[4];
+      var test = extract[5];
+      this.props.fileProps['CBone']= extract[5];
+      console.log(extract);
+      console.log(index);
+    }).bind(this);
 
     function parseData(url, callBack) {
       Papa.parse(url, {
@@ -83,18 +100,43 @@ class MeasPanel extends React.Component{
       });
     }
 
-    parseData("./catalog/0_meas_catalog.csv", doStuff);
+    parseData("./catalog/0_meas_catalog.csv", showMeas);
 
-    return(
-      <div>
-        <h3> Measurements </h3>
-        <p> <b>Soft Tissue: </b> Liver = xx HU, Fat = xx HU, Spleen = xx HU </p>
-        <p> <b>Bone: </b> Trabecular Bone = xx HU, Cortical Bone = xx HU </p>
-        <p> Test display of {this.props.fileProps['Index']}</p>
-      </div>
-  );
+    //refresh the variables
+    var cbone = this.props.fileProps['CBone'];
+
+    // delay the next part to let parse catch up
+    //var delayMillis = 5000;
+    //setTimeout(function() {
+    //  alert("Can proceed now!");
+    //}, delayMillis);
+
+
+    if (this.props.fileProps['Measurements']==2){
+      console.log(this.props.fileProps['CBone']);
+      return(
+        <div>
+          <font color="green">
+            <h3> Measurements </h3>
+          </font>
+          <p> <b>Soft Tissue: </b>
+            Liver = {this.props.fileProps['Liver']} HU,
+            Fat = {this.props.fileProps['Fat']} HU,
+            Spleen = {this.props.fileProps['Spleen']} HU </p>
+          <p> <b>Bone: </b>
+            Trabecular Bone = {this.props.fileProps['TBone']} HU,
+            Cortical Bone = {cbone} HU </p>
+          <p> <b>Dose: </b>
+            Reserved for display of <b>CTDIw</b></p>
+        </div>
+      );
+    }
+    else{
+      return null;
+    }
   }
 }
+
 
   class TeachPanel extends React.Component{
 
@@ -104,15 +146,17 @@ class MeasPanel extends React.Component{
     render (){
       return(
         <div>
+          <font color="blue">
             <h3> Teaching Unit</h3>
-            <p> <b><u> Dual Energy </u></b></p>
-            <p> Select an 80kVP parameter combination. <br></br>
-            Record the HU values for Spleen Trabecular and Cortical Bone</p>
-            <p> Now change only the kV to 130kVP. <br></br>
-            Again record the HU values for Spleen Trabecular and Cortical Bone. </p>
-            <p> Note that while soft tissue remains almost the same, <br></br>
-            the more dense materials exhibit a much greater change with different kV levels.</p>
-            <p> This is how Dual Energy acquisitions can do material decomposition or separation!</p>
+          </font>
+          <p> <b><u> Dual Energy </u></b></p>
+          <p> Select an 80kVP parameter combination. <br></br>
+          Record the HU values for Spleen Trabecular and Cortical Bone</p>
+          <p> Now change only the kV to 130kVP. <br></br>
+          Again record the HU values for Spleen Trabecular and Cortical Bone. </p>
+          <p> Note that while soft tissue remains almost the same, <br></br>
+          the more dense materials exhibit a much greater change with different kV levels.</p>
+          <p> This is how Dual Energy acquisitions can do material <br /> decomposition or separation!</p>
         </div>
     );
   }
@@ -191,11 +235,9 @@ class Image extends React.Component{
 
     if (this.props.name[0]=='K' && Measurement=='2' ) {
       var fileString = "./catalog/"+this.props.name+indexNum+"_A"+".jpg";
-      console.log(indexNum);
     }
     else{
       var fileString = "./catalog/"+this.props.name+indexNum+".jpg";
-      console.log(indexNum);
     }
 
 
@@ -234,7 +276,12 @@ class App extends React.Component {
       'Slice' : '1',
       'Detector Size' : '1',
       'Measurements' : '1',
-      'Index' : '98765'
+      'Index' : '98765',
+      'Liver' : '11',
+      'Fat' : '22',
+      'Spleen' : '33',
+      'TBone' : '44',
+      'CBone' : '55',
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -242,7 +289,7 @@ class App extends React.Component {
   handleChange(inputName, value){
     var newState = this.state;
     newState[inputName] = value;
-    console.log(newState);
+    //console.log(newState);
     this.setState(newState);
   }
   render() {
@@ -257,7 +304,7 @@ class App extends React.Component {
     </div>
   );
   }
-}
+} // Put Meas last after debug
 
 ReactDOM.render(
   <App/>,
