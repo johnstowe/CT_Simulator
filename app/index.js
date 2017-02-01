@@ -47,70 +47,6 @@ class MeasPanel extends React.Component{
   }
 
   render (){
-    var index = this.props.fileProps['Index'];
-    console.log(index);
-    var config = {
-	    delimiter: "",	// auto-detect
-	    newline: "",	// auto-detect
-	    header: false,
-	    dynamicTyping: false,
-	    preview: 0,
-	    encoding: "",
-	    worker: false,
-	    comments: false,
-	    step: undefined,
-	    complete: undefined,
-	    error: undefined,
-	    download: false,
-	    skipEmptyLines: false,
-	    chunk: undefined,
-	    fastMode: undefined,
-	    beforeFirstChunk: undefined,
-	    withCredentials: undefined
-    }
-
-    var showMeas = (function (data) {
-      // Does this need to go in handle change?
-      var extract = new Object();
-      extract = data[0];
-      var arrayLength = data.length;
-      for (var i = 0; i < arrayLength; i++) {
-      extract = data[i];
-      if (extract[0]==index) {
-         i=arrayLength;
-         }
-      }
-      this.props.fileProps['Liver']= extract[1];
-      this.props.fileProps['Fat']= extract[2];
-      this.props.fileProps['Spleen']= extract[3];
-      //this.props.fileProps['TBone']= extract[4];
-      var test = extract[5];
-      this.props.fileProps['CBone']= extract[5];
-      console.log(extract);
-      console.log(index);
-    }).bind(this);
-
-    function parseData(url, callBack) {
-      Papa.parse(url, {
-        download: true,
-        dynamicTyping: true,
-        complete: function(results) {
-            callBack(results.data);
-        }
-      });
-    }
-
-    parseData("./catalog/0_meas_catalog.csv", showMeas);
-
-    //refresh the variables
-    var cbone = this.props.fileProps['CBone'];
-
-    // delay the next part to let parse catch up
-    //var delayMillis = 5000;
-    //setTimeout(function() {
-    //  alert("Can proceed now!");
-    //}, delayMillis);
-
 
     if (this.props.fileProps['Measurements']==2){
       console.log(this.props.fileProps['CBone']);
@@ -125,7 +61,7 @@ class MeasPanel extends React.Component{
             Spleen = {this.props.fileProps['Spleen']} HU </p>
           <p> <b>Bone: </b>
             Trabecular Bone = {this.props.fileProps['TBone']} HU,
-            Cortical Bone = {cbone} HU </p>
+            Cortical Bone = {this.props.fileProps['CBone']} HU </p>
           <p> <b>Dose: </b>
             Reserved for display of <b>CTDIw</b></p>
         </div>
@@ -231,7 +167,59 @@ class Image extends React.Component{
     }
     var indexNum = indexKVP + indexMA + indexDet + indexSlice + indexKernal;
     this.props.fileProps['Index']=indexNum;
+    console.log(indexNum);
+    var config = {
+      delimiter: "",	// auto-detect
+      newline: "",	// auto-detect
+      header: false,
+      dynamicTyping: false,
+      preview: 0,
+      encoding: "",
+      worker: false,
+      comments: false,
+      step: undefined,
+      complete: undefined,
+      error: undefined,
+      download: false,
+      skipEmptyLines: false,
+      chunk: undefined,
+      fastMode: undefined,
+      beforeFirstChunk: undefined,
+      withCredentials: undefined
+    }
 
+    var showMeas = (function (data) {
+      // Does this need to go in handle change?
+      var extract = new Object();
+      extract = data[0];
+      var arrayLength = data.length;
+      for (var i = 0; i < arrayLength; i++) {
+      extract = data[i];
+      if (extract[0]==indexNum) {
+         i=arrayLength;
+         }
+      }
+      this.props.fileProps['Liver']= extract[1];
+      this.props.fileProps['Fat']= extract[2];
+      this.props.fileProps['Spleen']= extract[3];
+      //this.props.fileProps['TBone']= extract[4];
+      var test = extract[5];
+      this.props.fileProps['CBone']= extract[5];
+      console.log(extract);
+      console.log(indexNum);
+    }).bind(this);
+
+    function parseData(url, callBack) {
+      Papa.parse(url, {
+        download: true,
+        dynamicTyping: true,
+        complete: function(results) {
+            callBack(results.data);
+        }
+      });
+    }
+
+    parseData("./catalog/0_meas_catalog.csv", showMeas);
 
     if (this.props.name[0]=='K' && Measurement=='2' ) {
       var fileString = "./catalog/"+this.props.name+indexNum+"_A"+".jpg";
