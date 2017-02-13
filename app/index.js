@@ -49,7 +49,7 @@ class MeasPanel extends React.Component{
   render (){
 
     if (this.props.fileProps['Measurements']==2){
-      console.log(this.props.fileProps['CBone']);
+      //console.log(this.props.fileProps['CBone']);
       return(
         <div>
           <font color="green">
@@ -73,8 +73,7 @@ class MeasPanel extends React.Component{
   }
 }
 
-
-  class TeachPanel extends React.Component{
+class TeachPanel extends React.Component{
 
     constructor(props){
       super(props);
@@ -154,78 +153,13 @@ class Image extends React.Component{
       padding:'20px'
 
     };
-    // addition of [ ""+ ] needed for stability as type of return was changing
-    var indexKVP = ""+this.props.fileProps['kVP'];
-    var indexMA = ""+this.props.fileProps['mAS'];
-    var indexDet = ""+this.props.fileProps['Detector Size'];
-    var indexSlice = ""+this.props.fileProps['Slice'];
-    var indexKernal = ""+this.props.fileProps['Kernal'];
-    var Measurement = ""+this.props.fileProps['Measurements'];
-    if(indexMA == 10)
-    {
-      indexMA = 'A';
-    }
-    var indexNum = indexKVP + indexMA + indexDet + indexSlice + indexKernal;
-    this.props.fileProps['Index']=indexNum;
-    console.log(indexNum);
-    var config = {
-      delimiter: "",	// auto-detect
-      newline: "",	// auto-detect
-      header: false,
-      dynamicTyping: false,
-      preview: 0,
-      encoding: "",
-      worker: false,
-      comments: false,
-      step: undefined,
-      complete: undefined,
-      error: undefined,
-      download: false,
-      skipEmptyLines: false,
-      chunk: undefined,
-      fastMode: undefined,
-      beforeFirstChunk: undefined,
-      withCredentials: undefined
-    }
 
-    var showMeas = (function (data) {
-      // Does this need to go in handle change?
-      var extract = new Object();
-      extract = data[0];
-      var arrayLength = data.length;
-      for (var i = 0; i < arrayLength; i++) {
-      extract = data[i];
-      if (extract[0]==indexNum) {
-         i=arrayLength;
-         }
-      }
-      this.props.fileProps['Liver']= extract[1];
-      this.props.fileProps['Fat']= extract[2];
-      this.props.fileProps['Spleen']= extract[3];
-      //this.props.fileProps['TBone']= extract[4];
-      var test = extract[5];
-      this.props.fileProps['CBone']= extract[5];
-      console.log(extract);
-      console.log(indexNum);
-    }).bind(this);
 
-    function parseData(url, callBack) {
-      Papa.parse(url, {
-        download: true,
-        dynamicTyping: true,
-        complete: function(results) {
-            callBack(results.data);
-        }
-      });
-    }
-
-    parseData("./catalog/0_meas_catalog.csv", showMeas);
-
-    if (this.props.name[0]=='K' && Measurement=='2' ) {
-      var fileString = "./catalog/"+this.props.name+indexNum+"_A"+".jpg";
+    if (this.props.name[0]=='K' && this.props.fileProps['Measurements']=='2' ) {
+      var fileString = "./catalog/"+this.props.name+this.props.fileProps['Index']+"_A"+".jpg";
     }
     else{
-      var fileString = "./catalog/"+this.props.name+indexNum+".jpg";
+      var fileString = "./catalog/"+this.props.name+this.props.fileProps['Index']+".jpg";
     }
 
 
@@ -264,7 +198,7 @@ class App extends React.Component {
       'Slice' : '1',
       'Detector Size' : '1',
       'Measurements' : '1',
-      'Index' : '98765',
+      'Index' : '11111',
       'Liver' : '11',
       'Fat' : '22',
       'Spleen' : '33',
@@ -277,9 +211,76 @@ class App extends React.Component {
   handleChange(inputName, value){
     var newState = this.state;
     newState[inputName] = value;
-    //console.log(newState);
-    this.setState(newState);
+    // addition of [ ""+ ] needed for stability as type of return was changing
+    var indexKVP = ""+this.state['kVP'];
+    var indexMA = ""+this.state['mAS'];
+    var indexDet = ""+this.state['Detector Size'];
+    var indexSlice = ""+this.state['Slice'];
+    var indexKernal = ""+this.state['Kernal'];
+    var Measurement = ""+this.state['Measurements'];
+    if(indexMA == 10)
+    {
+      indexMA = 'A';
+    }
+    var indexNum = indexKVP + indexMA + indexDet + indexSlice + indexKernal;
+    this.state['Index']=indexNum;
+    var config = {
+      delimiter: "",	// auto-detect
+      newline: "",	// auto-detect
+      header: false,
+      dynamicTyping: false,
+      preview: 0,
+      encoding: "",
+      worker: false,
+      comments: false,
+      step: undefined,
+      complete: undefined,
+      error: undefined,
+      download: false,
+      skipEmptyLines: false,
+      chunk: undefined,
+      fastMode: undefined,
+      beforeFirstChunk: undefined,
+      withCredentials: undefined
+    }
+
+    var showMeas = (function (data) {
+      // Does this need to go in handle change?
+      var extract = new Object();
+      extract = data[0];
+      var arrayLength = data.length;
+      for (var i = 0; i < arrayLength; i++) {
+      extract = data[i];
+      if (extract[0]==indexNum) {
+         i=arrayLength;
+         }
+      }
+      this.state['Liver']= extract[1];
+      this.state['Fat']= extract[2];
+      this.state['Spleen']= extract[3];
+      this.state['TBone']= extract[4];
+      this.state['CBone']= extract[5];
+      console.log(newState);
+      this.setState(newState);
+    }).bind(this);
+
+    function parseData(url, callBack) {
+      Papa.parse(url, {
+        download: true,
+        dynamicTyping: true,
+        complete: function(results) {
+            callBack(results.data);
+        }
+      });
+    }
+
+    parseData("./catalog/0_meas_catalog.csv", showMeas);
+
+    console.log(indexNum);
   }
+
+
+
   render() {
     return (
       <div className = "container-fluid">
