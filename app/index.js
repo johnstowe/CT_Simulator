@@ -63,7 +63,10 @@ class MeasPanel extends React.Component{
             Trabecular Bone = {this.props.fileProps['TBone']} HU,
             Cortical Bone = {this.props.fileProps['CBone']} HU </p>
           <p> <b>Dose: </b>
-            Reserved for display of <b>CTDIw</b></p>
+            CTDIvol = {this.props.fileProps['CTDIvol']} mGy,
+            DLP = {this.props.fileProps['DLP']} mGy.cm </p>
+          <p> <b>Noise: </b>
+            Liver Region of Interest (RoI) = {this.props.fileProps['Noise']} SD </p>
         </div>
       );
     }
@@ -86,7 +89,7 @@ class TeachPanel extends React.Component{
           </font>
           <p> <b><u> Dual Energy </u></b></p>
           <p> Select an 80kVP parameter combination. <br></br>
-          Record the HU values for Spleen Trabecular and Cortical Bone</p>
+          Record the HU values for Spleen Trabecular and Cortical Bone.</p>
           <p> Now change only the kV to 130kVP. <br></br>
           Again record the HU values for Spleen Trabecular and Cortical Bone. </p>
           <p> Note that while soft tissue remains almost the same, <br></br>
@@ -204,6 +207,9 @@ class App extends React.Component {
       'Spleen' : '33',
       'TBone' : '44',
       'CBone' : '55',
+      'CTDIvol' : '66',
+      'DLP' : '77',
+      'Noise' : '0.0'
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -260,6 +266,9 @@ class App extends React.Component {
       this.state['Spleen']= extract[3];
       this.state['TBone']= extract[4];
       this.state['CBone']= extract[5];
+      this.state['CTDIvol']= extract[6];
+      this.state['DLP']= extract[7];
+      this.state['Noise']= extract[8];
       console.log(newState);
       this.setState(newState);
     }).bind(this);
@@ -274,7 +283,7 @@ class App extends React.Component {
       });
     }
 
-    parseData("./catalog/0_meas_catalog.csv", showMeas);
+    parseData("./catalog/0_Meas_Catalog_v3.csv", showMeas);
 
     console.log(indexNum);
   }
