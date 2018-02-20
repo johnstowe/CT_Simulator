@@ -1,0 +1,8 @@
+body{
+  background: blue;
+}
+.imageProperties{
+    height:360px;
+    width: 360px;
+    padding:20px;
+}
