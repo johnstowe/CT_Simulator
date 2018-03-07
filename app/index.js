@@ -92,8 +92,9 @@ class TeachPanel extends React.Component{
           Record the HU values for Fat, Spleen and Cortical Bone.</p>
           <p> Now change only the kV to 130kVP. <br></br>
           Again record the HU values for Fat, Spleen and Cortical Bone. </p>
-          <p> Note that while soft tissue remains almost the same, <br></br>
-          the more dense materials exhibit a much greater change with different kV levels.</p>
+        <p> Note that while water-like soft tissue remains almost the same, <br></br>
+          materials more dense than water decrease in value with higher kVP levels
+          whereas materials less dense than water increase in value.</p>
           <p> This is how Dual Energy acquisitions can do material <br /> decomposition or separation!</p>
         </div>
     );
