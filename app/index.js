@@ -89,9 +89,9 @@ class TeachPanel extends React.Component{
           </font>
           <p> <b><u> Dual Energy </u></b></p>
           <p> Select an 80kVP parameter combination. <br></br>
-          Record the HU values for Spleen Trabecular and Cortical Bone.</p>
+          Record the HU values for Fat, Spleen and Cortical Bone.</p>
           <p> Now change only the kV to 130kVP. <br></br>
-          Again record the HU values for Spleen Trabecular and Cortical Bone. </p>
+          Again record the HU values for Fat, Spleen and Cortical Bone. </p>
           <p> Note that while soft tissue remains almost the same, <br></br>
           the more dense materials exhibit a much greater change with different kV levels.</p>
           <p> This is how Dual Energy acquisitions can do material <br /> decomposition or separation!</p>
