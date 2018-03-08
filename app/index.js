@@ -40,6 +40,30 @@ class Input extends React.Component{
   }
 }
 
+class InfoPanel extends React.Component{
+
+    constructor(props){
+      super(props);
+    }
+    render (){
+      return(
+        <div>
+          <h2> <font color = "blue">
+          CTSim </font> is licensed by </h2>
+          <p>
+          <img src={'UCD.png'} />
+          <img src={'Norway.png'} />
+          <br /> Lead developer Dr. John Stowe (UCD) under a <br />
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+              Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License  </a>
+            <img src={'https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png'} />
+            <br />
+          </p>
+       </div>
+      );
+  }
+}
+
 class MeasPanel extends React.Component{
 
   constructor(props){
@@ -53,6 +77,7 @@ class MeasPanel extends React.Component{
       return(
         <div>
           <font color="green">
+            <br />
             <h3> Measurements </h3>
           </font>
           <p> <b>Soft Tissue: </b>
@@ -76,30 +101,8 @@ class MeasPanel extends React.Component{
   }
 }
 
-class TeachPanel extends React.Component{
 
-    constructor(props){
-      super(props);
-    }
-    render (){
-      return(
-        <div>
-          <font color="blue">
-            <h3> Teaching Unit</h3>
-          </font>
-          <p> <b><u> Dual Energy </u></b></p>
-          <p> Select an 80kVP parameter combination. <br></br>
-          Record the HU values for Fat, Spleen and Cortical Bone.</p>
-          <p> Now change only the kV to 130kVP. <br></br>
-          Again record the HU values for Fat, Spleen and Cortical Bone. </p>
-        <p> Note that while water-like soft tissue remains almost the same, <br></br>
-          materials more dense than water decrease in value with higher kVP levels
-          whereas materials less dense than water increase in value.</p>
-          <p> This is how Dual Energy acquisitions can do material <br /> decomposition or separation!</p>
-        </div>
-    );
-  }
-}
+
 
   class InputPanel extends React.Component{
 
@@ -296,9 +299,9 @@ class App extends React.Component {
       <div className = "container-fluid">
         <div className= "row">
           <ImagePanel fileProps = {this.state}/>
+          <InfoPanel fileProps = {this.state}/>
           <InputPanel alertParent = {this.handleChange}/>
           <MeasPanel fileProps = {this.state}/>
-          <TeachPanel fileProps = {this.state}/>
       </div>
     </div>
   );
