@@ -31,10 +31,15 @@ class Input extends React.Component{
     super(props);
   }
   render () {
+    var style = {
+      fontSize : '16'
+    }
+
     return (
     <div className="col-md-6">
       <h3>{this.props.name}</h3>
-      <ShowList options={this.props.options} alertParent = {this.props.alertParent} name={this.props.name}/>
+      <ShowList style={style} options={this.props.options}
+        alertParent = {this.props.alertParent} name={this.props.name}/>
     </div>
     );
   }
@@ -46,10 +51,13 @@ class InfoPanel extends React.Component{
       super(props);
     }
     render (){
+      var background = {background : 'gray'}
+
       return(
-        <div>
+//        <div style={background}>
+          <div>
           <h2> <font color = "blue">
-          CTSim </font> is licensed by </h2>
+          CTSim </font> (v2.0) is licensed by </h2>
           <p>
           <img src={'UCD.png'} />
           <img src={'Norway.png'} />
@@ -57,7 +65,7 @@ class InfoPanel extends React.Component{
             <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
               Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License  </a>
             <img src={'https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png'} />
-            <br />
+            <br /><br />
           </p>
        </div>
       );
@@ -76,9 +84,11 @@ class MeasPanel extends React.Component{
       //console.log(this.props.fileProps['CBone']);
       return(
         <div>
-          <font color="green">
-            <br />
-            <h3> Measurements </h3>
+          <font color="lightgray">
+            <p> {"Blank"} <br /></p>
+            </font>
+            <font color="green">
+            <h3>Measurements</h3>
           </font>
           <p> <b>Soft Tissue: </b>
             Liver = {this.props.fileProps['Liver']} HU,
@@ -120,13 +130,16 @@ class MeasPanel extends React.Component{
     }
 
     var style = {
-      background : 'blue'
-    }
-    var padding = {
-      padding : '10px'
+      background : 'gray',
+      border:'2px solid #000000',
+      height: '270px',
+      width: '400px',
+      padding : '10px',
+      fontSize: '16px',
+      fontWeight: 'bold'
     }
     var optionsKv = ['80','110','130']
-    var optionsKernal = ['B10','B30','B40','B50','B70']
+    var optionsKernal = ['Very Smooth','Smooth','Standard','Sharp','Very Sharp']
     var optionsMa = generateList(50,500,50)
     var optionsSlice = ['1','2','3','4','6','10']
     var optionsDetect = ['0.6','1.2']
@@ -134,13 +147,15 @@ class MeasPanel extends React.Component{
 
     return (
       <div className="col-md-4">
-        <div className="row" style={padding}>
+        <div className="row" style={style}>
+          <font color = "darkblue">
           <Input name="kVP" options = {optionsKv} alertParent = {this.props.alertParent}/>
           <Input name="mAS" options = {optionsMa} alertParent = {this.props.alertParent}/>
           <Input name="Kernal" options = {optionsKernal} alertParent = {this.props.alertParent}/>
           <Input name="Slice" options = {optionsSlice} alertParent = {this.props.alertParent}/>
           <Input name="Detector Size" options = {optionsDetect} alertParent = {this.props.alertParent}/>
           <Input name="Measurements" options = {optionsMeasure} alertParent = {this.props.alertParent}/>
+          </font>
         </div>
       </div>
     );
@@ -157,8 +172,8 @@ class Image extends React.Component{
     var style = {
       height: '360px',
       width: '360px',
-      padding:'20px'
-
+      padding:'20px',
+      background: 'lightgray'
     };
 
 
@@ -295,9 +310,10 @@ class App extends React.Component {
 
 
   render() {
+    var background = {background : 'lightgray'}
     return (
       <div className = "container-fluid">
-        <div className= "row">
+        <div className="row" style={background}>
           <ImagePanel fileProps = {this.state}/>
           <InfoPanel fileProps = {this.state}/>
           <InputPanel alertParent = {this.handleChange}/>
